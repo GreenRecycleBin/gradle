@@ -164,7 +164,7 @@
     "dirName": "core-api",
     "name": "core-api",
     "unitTests": true,
-    "functionalTests": false,
+    "functionalTests": true,
     "crossVersionTests": false
   },
   {
@@ -277,6 +277,13 @@
     "name": "file-collections",
     "unitTests": true,
     "functionalTests": true,
+    "crossVersionTests": false
+  },
+  {
+    "dirName": "file-temp",
+    "name": "file-temp",
+    "unitTests": false,
+    "functionalTests": false,
     "crossVersionTests": false
   },
   {

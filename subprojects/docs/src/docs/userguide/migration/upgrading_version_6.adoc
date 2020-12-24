@@ -33,6 +33,53 @@ Some plugins will break with this new version of Gradle, for example because the
 . Run `gradle wrapper --gradle-version {gradleVersion}` to update the project to {gradleVersion}.
 . Try to run the project and debug any errors using the <<troubleshooting.adoc#troubleshooting, Troubleshooting Guide>>.
 
+[[changes_7.0]]
+== Upgrading from 6.8
+
+=== Potential breaking changes
+
+==== Removal of `compile` and `runtime` configurations
+
+Since its inception, Gradle provided the `compile` and `runtime` configurations to declare dependencies.
+These however did not support a fine grained scoping of dependencies. Hence, better replacements were introduced in Gradle 3.4:
+
+- The `implementation` configuration should be used to declare dependencies which are _implementation details_ of a library: they are not visible to consumers of the library during compilation time.
+- The `api` configuration, available only if you apply the `java-library` plugin, should be used to declare dependencies which are part of the API of a library, that need to be exposed to consumers at compilation time.
+
+In Gradle 7, both the `compile` and `runtime` configurations are removed.
+Therefore, you have to migrate to the `implementation` and `api` configurations above.
+If you are still using the `java` plugin for a Java library, you will need to apply the `java-library` plugin instead.
+
+You can find more details about the benefits of the new configurations and which one to use in place of `compile` and `runtime` by reading the <<java_library_plugin.adoc#java_library_plugin,Java Library plugin>> documentation.
+
+==== Configuring the layout of an Ivy repository
+
+The `layout` method taking a configuration block has been removed and is replaced by link:{groovyDslPath}/org.gradle.api.artifacts.repositories.IvyArtifactRepository.html#org.gradle.api.artifacts.repositories.IvyArtifactRepository:patternLayout(org.gradle.api.Action)[patternLayout].
+
+==== Removal of `ProjectLayout#configurableFiles`
+
+Please use `ObjectFactory#fileCollection()` instead.
+
+==== Properties removed in Checkstyle and PMD plugins
+
+* The `configDir` getters and setters have been removed from the Checkstle task and extension.
+Use the `configDirectory` property instead.
+* The `rulePriority` getter and setter have been removed from the Pmd task and extension.
+Use the `rulesMinimumPriority` property instead.
+
+==== Using `AbstractTask`
+
+Registering a task with the `AbstractTask` type or with a type extending `AbstractTask` was deprecated in Gradle 6.5 and is now an error in Gradle 7.0.
+You can use link:{javadocPath}/org/gradle/api/DefaultTask.html[DefaultTask] instead.
+
+=== Deprecations
+
+[[missing_dependencies]]
+==== Missing dependencies between tasks
+
+Having a task which produces an output in a location and another task consuming that location by referring to it as an input without the consumer task depending on the producer task has been deprecated.
+A fix for this problem is to <<more_about_tasks.adoc#sec:link_output_dir_to_input_files,add a dependency from the consumer to the producer>>.
+
 [[changes_6.8]]
 == Upgrading from 6.7
 
@@ -42,7 +89,7 @@ Some plugins will break with this new version of Gradle, for example because the
 
 The API supporting the Java Toolchain feature in `org.gradle.jvm.toolchain` is now marked as `@NonNull`.
 
-This may impact Kotlin consumers where the return types of APIs are no longer nullable. 
+This may impact Kotlin consumers where the return types of APIs are no longer nullable.
 
 ==== Updates to default tool integration versions
 
@@ -78,6 +125,13 @@ public FileTree getSourcesWithEmptyDirectories() {
     return super.getSource()
 }
 ```
+
+==== Changes to publications
+
+Publishing a component which has a dependency on an enforced platform now triggers a validation error, preventing accidental publishing of bad metadata:
+enforced platforms use cases should be limited to applications, not things which can be consumed from another library or an application.
+
+If, for some reason, you still want to publish components with dependencies on enforced platforms, you can disable the validation following the <<publishing_setup.adoc#sec:suppressing_validation_errors, documentation>>.
 
 === Deprecations
 

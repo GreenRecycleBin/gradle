@@ -100,7 +100,6 @@ public interface ObjectFactory {
      * @param displayName A human consumable display name for the set.
      * @since 5.0
      */
-    @Incubating
     SourceDirectorySet sourceDirectorySet(String name, String displayName);
 
     /**
@@ -108,7 +107,6 @@ public interface ObjectFactory {
      *
      * @since 5.3
      */
-    @Incubating
     ConfigurableFileCollection fileCollection();
 
     /**
@@ -122,7 +120,9 @@ public interface ObjectFactory {
     /**
      * <p>Creates a new {@link NamedDomainObjectContainer} for managing named objects of the specified type.</p>
      *
-     * <p>The specified element type must have a public constructor which takes the name as a String parameter. The type must be non-final and a class or abstract class. Interfaces are currently not supported.</p>
+     * <p>The specified element type must have a public constructor which takes the name as a String parameter. The type must be non-final and a class or abstract class.</p>
+     *
+     * <p>Interfaces are supported if they declare a read-only {@code name} property of type String, and are otherwise empty or consist entirely of managed properties.</p>
      *
      * <p>All objects <b>MUST</b> expose their name as a bean property called "name". The name must be constant for the life of the object.</p>
      *
@@ -262,7 +262,6 @@ public interface ObjectFactory {
      *
      * @since 5.0
      */
-    @Incubating
     DirectoryProperty directoryProperty();
 
     /**
@@ -270,6 +269,5 @@ public interface ObjectFactory {
      *
      * @since 5.0
      */
-    @Incubating
     RegularFileProperty fileProperty();
 }

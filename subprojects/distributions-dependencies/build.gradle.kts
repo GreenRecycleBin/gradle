@@ -1,19 +1,3 @@
-/*
- * Copyright 2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /**
  * This project provides the "platform" for the Gradle distribution.
  * We want the versions that are packaged in the distribution to be used everywhere (e.g. in all test scenarios)
@@ -38,7 +22,7 @@ val jacksonVersion = "2.10.2"
 val jettyVersion = "9.4.31.v20200723"
 val mavenVersion = "3.0.5"
 val mavenWagonVersion = "3.0.0"
-val nativePlatformVersion = "0.22-milestone-9"
+val nativePlatformVersion = "0.22-milestone-10"
 val pmavenVersion = "0.8-20100325"
 val slf4jVersion = "1.7.28"
 val sshdVersion = "2.0.0"
@@ -62,6 +46,7 @@ dependencies {
         api(libs.awsS3Core)             { version { strictly(awsS3Version) }}
         api(libs.awsS3Kms)              { version { strictly(awsS3Version) }}
         api(libs.awsS3S3)               { version { strictly(awsS3Version) }}
+        api(libs.awsS3Sts)              { version { strictly(awsS3Version) }}
         api(libs.bouncycastlePgp)       { version { strictly(bouncycastleVersion) }}
         api(libs.bouncycastleProvider)  { version { strictly(bouncycastleVersion) }}
         api(libs.bsh)                   { version { strictly("2.0b6") }}
